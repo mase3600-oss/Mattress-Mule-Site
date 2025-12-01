@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mattress Mule – Rhode Island Mattress Removal | $109 Starting</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; text-align: center; color: #333; }
+        .hero { background: linear-gradient(to bottom, #4CAF50, #45a049); color: white; padding: 50px 20px; }
+        .big-button { background: #FF5722; color: white; border: none; padding: 20px 40px; font-size: 24px; border-radius: 10px; cursor: pointer; width: 100%; max-width: 300px; margin: 20px auto; display: block; }
+        .big-button:hover { background: #E64A19; }
+        .form-section { padding: 20px; max-width: 400px; margin: auto; }
+        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        #price { font-size: 28px; color: #4CAF50; font-weight: bold; }
+        footer { padding: 20px; background: #333; color: white; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Old Mattress Gone Today – From $109</h1>
+        <p>We haul, recycle, and dispose responsibly in RI (Central Landfill approved).</p>
+        <button class="big-button" onclick="showForm()">PICK UP MY MATTRESS TODAY</button>
+    </div>
+    
+    <div id="form" class="form-section" style="display:none;">
+        <h2>Get Instant Quote</h2>
+        <input type="text" id="zip" placeholder="Enter ZIP Code (e.g., 02903)" oninput="updatePrice()">
+        <input type="number" id="quantity" placeholder="How many mattresses?" min="1" value="1" oninput="updatePrice()">
+        <select id="type" oninput="updatePrice()">
+            <option value="curbside">Curbside Pickup ($109 each)</option>
+            <option value="inside">Inside Pickup ($159 each)</option>
+        </select>
+        <input type="date" id="date" value="">
+        <div id="price">$109 Total</div>
+        <button class="big-button" onclick="bookNow()">PAY & BOOK NOW</button>
+    </div>
+    
+    <footer>
+        <p>Call/Text: (555) 123-4567 | Serving All RI | We recycle 90% at RIRRC Johnston</p>
+    </footer>
+    
+    <script>
+        function showForm() {
+            document.getElementById('form').style.display = 'block';
+            window.scrollTo(0, document.getElementById('form').offsetTop);
+        }
+        function updatePrice() {
+            let qty = parseInt(document.getElementById('quantity').value) || 1;
+            let base = document.getElementById('type').value === 'curbside' ? 109 : 159;
+            document.getElementById('price').innerText = `$${base * qty} Total`;
+        }
+        function bookNow() {
+            // Replace with your Stripe link: https://buy.stripe.com/...
+            window.open('https://buy.stripe.com/test_bypasscheckout', '_blank');
+            alert('Booking confirmed! We\'ll text you in 5 mins.');
+        }
+    </script>
+</body>
+</html>
