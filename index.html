@@ -1,61 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mattress Mule – Rhode Island Mattress Pickup $119+</title>
-    <meta name="description" content="Same-day mattress removal in Rhode Island. Curbside $119 · Inside $179 · Stairs/King $219. Book in 20 seconds.">
-    <style>
-        }
-        .hero{background:#2e7d32;color:white;padding:40px 15px;text-align:center}
-        h1{font-size:2.2rem;margin:0 0 0 15px}
-        .big-btn{display:block;width:90%;max-width:360px;margin:25px auto;padding:22px;font-size:26px;font-weight:bold;color:white;background:#ff5722;border:none;border-radius:16px;cursor:pointer}
-        .form{max-width:420px;margin:20px auto;background:white;padding:20px;border-radius:16px;box-shadow:0 4px 15px rgba(0,0,0,.1)}
-        input,select{width:100%;padding:14px;margin:10px 0;border:1px solid #ddd;border-radius:10px;font-size:16px;box-sizing:border-box}
-        #price{font-size:34px;font-weight:bold;color:#2e7d32;margin:20px 0}
-        .hidden{display:none}
-        footer{background:#222;color:white;text-align:center;padding:20px;font-size:14px}
-        img{max-width:100%;height:auto;border-radius:12px;margin:15px auto;display:block}
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mattress Mule – Rhode Island</title>
+<style>
+    body,html{margin:0;padding:0;height:100%;font-family:system-ui,sans-serif;background:#2e7d32;color:white}
+    .all{background:#2e7d32;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:40px 20px 20px;text-align:center}
+    h1{font-size:2.4rem;margin:0}
+    img{max-width:100%;border-radius:18px;margin:25px 0}
+    .btn{background:#ff5722;color:white;font-size:28px;font-weight:bold;padding:22px 40px;border:none;border-radius:18px;width:90%;max-width:380px;margin:20px auto;display:block}
+    footer{background:#111;padding:18px;font-size:16px}
+</style>
 </head>
 <body>
-body{margin:0;font-family:system-ui,sans-serif;background:#2e7d32;color:white;min-height:100vh;display:flex;flex-direction:column}
-<div class="hero">
-    <h1>Old Mattress Gone Today</h1>
-    
-    <p>Fast, responsible removal in Rhode Island — recycled at Central Landfill</p>
-    <button class="big-btn" onclick="showForm()">PICK UP MY MATTRESS TODAY</button>
-</div>
-
-<div id="form" class="form" style="display:none">
-    <h2>Get Your Price & Book</h2>
-    <input type="text" id="zip" placeholder="ZIP Code (e.g. 02903)" required>
-    <input type="number" id="quantity" value="1" min="1" placeholder="How many mattresses?">
-    <select id="type" onchange="updatePrice();toggleInside()">
-        <option value="119">Curbside – 1 Mule ($119)</option>
-        <option value="179">Inside Home Removal – 2 Mules ($179)</option>
-        <option value="219">Inside + Stairs/King – 2 Mules ($219)</option>
-    </select>
-    <input type="date" id="date" required>
-    <div id="price">$119 Total</div>
-
-    <div id="inside-questions" class="hidden">
-        <select id="size"><option>Mattress Size?</option><option>Twin</option><option>Full</option><option>Queen</option><option>King</option><option>Cal King</option></select>
-        <select id="floor"><option>Which floor?</option><option>1st floor</option><option>2nd floor</option><option>3rd floor</option><option>4th+</option><option>Basement</option></select>
+<div class="all">
+    <div>
+        <h1>Old Mattress Gone Today</h1>
+        <img src="https://freeimage.host/i/fxvb3wG.jpg" alt="Mattress Mule">
+        <p>Fast, responsible removal in Rhode Island — recycled at Central Landfill</p>
+        <button class="btn" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">
+            PICK UP MY MATTRESS TODAY
+        </button>
     </div>
 
-    <button class="big-btn" onclick="bookNow()">PAY & BOOK NOW</button>
+    <div id="form" style="width:100%;max-width:420px;margin:0 auto 40px">
+        <div style="background:white;color:#222;padding:25px;border-radius:18px">
+            <h2>Get Your Price & Book</h2>
+            <input type="text" placeholder="ZIP Code (e.g. 02903)" style="width:100%;padding:14px;margin:10px 0;border-radius:10px;border:1px solid #ccc;font-size:16px">
+            <input type="number" value="1" min="1" placeholder="How many mattresses?" style="width:100%;padding:14px;margin:10px 0;border-radius:10px;border:1px solid #ccc;font-size:16px">
+            <select onchange="p=this.value;document.getElementById('price').textContent='$'+(p*document.querySelector('[type=number]').value||p)+' Total'" style="width:100%;padding:14px;margin:10px 0;border-radius:10px;border:1px solid #ccc;font-size:16px">
+                <option value="119">Curbside – 1 Mule ($119)</option>
+                <option value="179">Inside Home Removal – 2 Mules ($179)</option>
+                <option value="219">Inside + Stairs/King – 2 Mules ($219)</option>
+            </select>
+            <input type="date" style="width:100%;padding:14px;margin:10px 0;border-radius:10px;border:1px solid #ccc;font-size:16px">
+            <div id="price" style="font-size:34px;font-weight:bold;color:#2e7d32;margin:20px 0">$119 Total</div>
+            <button class="btn" onclick="alert('Booking received! We’ll text 401-360-6801 in 5 minutes')">PAY & BOOK NOW</button>
+        </div>
+    </div>
+
+    <footer>
+        Call/Text: <strong>401-360-6801</strong> • Serving all Rhode Island • 90% recycled
+    </footer>
 </div>
-
-<footer>
-    Call/Text: <strong>401-360-6801</strong> • Serving all Rhode Island • 90% recycled
-</footer>
-
-<script>
-    function showForm(){document.getElementById('form').style.display='block';document.getElementById('date').min=new Date().toISOString().split('T')[0];document.getElementById('date').value=new Date().toISOString().split('T')[0];window.scrollTo({top:document.getElementById('form').offsetTop,behavior:'smooth'});}
-    function updatePrice(){let q=document.getElementById('quantity').value||1;let b=parseInt(document.getElementById('type').value);document.getElementById('price').textContent='$' + (b*q) + ' Total';}
-    function toggleInside(){document.getElementById('inside-questions').classList.toggle('hidden',document.getElementById('type').value==119);}
-    function bookNow(){alert('Booking received! We’ll text 401-360-6801 in 5 minutes.');window.open('https://buy.stripe.com/test_bypasscheckout','_blank');}
-</script>
 </body>
 </html>
