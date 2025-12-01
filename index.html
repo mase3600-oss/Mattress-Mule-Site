@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mattress Mule – Rhode Island Mattress Removal | $109 Starting</title>
+    <title>Mattress Mule – Rhode Island Mattress Removal | $119 Starting</title>
     <style>
         body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f4f4f4; text-align: center; color: #333; }
         .hero { background: linear-gradient(to bottom, #4CAF50, #45a049); color: white; padding: 50px 20px; }
@@ -12,12 +12,15 @@
         .form-section { padding: 20px; max-width: 400px; margin: auto; }
         input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
         #price { font-size: 28px; color: #4CAF50; font-weight: bold; }
+        .hidden { display: none; }
         footer { padding: 20px; background: #333; color: white; }
+        #size-group, #floor-group { display: none; margin-top: 10px; }
     </style>
 </head>
 <body>
     <div class="hero">
-        <h1>Old Mattress Gone Today – From $109</h1>
+        <h1>Old Mattress Gone Today – From $119</h1>
+        <img src="https://source.unsplash.com/random/800x400/?truck,mattress,recycling" alt="Mattress Mule truck" style="width:100%; max-width:500px; border-radius:15px; margin:20px auto; display:block;">
         <p>We haul, recycle, and dispose responsibly in RI (Central Landfill approved).</p>
         <button class="big-button" onclick="showForm()">PICK UP MY MATTRESS TODAY</button>
     </div>
@@ -26,33 +29,73 @@
         <h2>Get Instant Quote</h2>
         <input type="text" id="zip" placeholder="Enter ZIP Code (e.g., 02903)" oninput="updatePrice()">
         <input type="number" id="quantity" placeholder="How many mattresses?" min="1" value="1" oninput="updatePrice()">
-        <select id="type" oninput="updatePrice()">
-            <option value="curbside">Curbside Pickup ($109 each)</option>
-            <option value="inside">Inside Pickup ($159 each)</option>
+        <select id="type" oninput="updatePrice(); toggleExtraQuestions()">
+            <option value="curbside">Curbside – 1 Mule ($119 each)</option>
+            <option value="inside">Inside/Home Removal – 2 Mules ($199 each)</option>
+            <option value="stairs">Inside + Stairs/Heavy – 2 Mules ($249 each)</option>
         </select>
-        <input type="date" id="date" value="">
-        <div id="price">$109 Total</div>
+        <input type="date" id="date" min="" value="" placeholder="When do you want it gone? (Same-day available)">
+        <div id="price">$119 Total</div>
+        
+        <div id="size-group" class="hidden">
+            <label>Mattress Size?</label>
+            <select id="size">
+                <option value="twin">Twin</option>
+                <option value="full">Full</option>
+                <option value="queen">Queen</option>
+                <option value="king">King</option>
+                <option value="cal-king">California King</option>
+            </select>
+        </div>
+        
+        <div id="floor-group" class="hidden">
+            <label>Which floor is the mattress on?</label>
+            <select id="floor">
+                <option value="1st">1st floor</option>
+                <option value="2nd">2nd floor</option>
+                <option value="3rd">3rd floor</option>
+                <option value="4th+">4th floor or higher</option>
+                <option value="basement">Basement</option>
+            </select>
+        </div>
+        
         <button class="big-button" onclick="bookNow()">PAY & BOOK NOW</button>
     </div>
     
     <footer>
-        <p>Call/Text: (401) 360-6801 | Serving All RI | We recycle 90% at RIRRC Johnston</p>
+        <p>Call/Text: (555) 123-4567 | Serving All RI | We recycle 90% at RIRRC Johnston</p>
     </footer>
     
     <script>
         function showForm() {
             document.getElementById('form').style.display = 'block';
             window.scrollTo(0, document.getElementById('form').offsetTop);
+            // Set min date to today
+            document.getElementById('date').min = new Date().toISOString().split('T')[0];
+            document.getElementById('date').value = new Date().toISOString().split('T')[0]; // Default to today
         }
         function updatePrice() {
             let qty = parseInt(document.getElementById('quantity').value) || 1;
-            let base = document.getElementById('type').value === 'curbside' ? 109 : 159;
+            let type = document.getElementById('type').value;
+            let base = type === 'curbside' ? 119 : (type === 'inside' ? 199 : 249);
             document.getElementById('price').innerText = `$${base * qty} Total`;
+        }
+        function toggleExtraQuestions() {
+            let type = document.getElementById('type').value;
+            let sizeGroup = document.getElementById('size-group');
+            let floorGroup = document.getElementById('floor-group');
+            if (type === 'curbside') {
+                sizeGroup.classList.add('hidden');
+                floorGroup.classList.add('hidden');
+            } else {
+                sizeGroup.classList.remove('hidden');
+                floorGroup.classList.remove('hidden');
+            }
         }
         function bookNow() {
             // Replace with your Stripe link: https://buy.stripe.com/...
             window.open('https://buy.stripe.com/test_bypasscheckout', '_blank');
-            alert('Booking confirmed! We\'ll text you in 5 mins.');
+            alert('Booking confirmed! We\'ll text you in 5 mins with details.');
         }
     </script>
 </body>
