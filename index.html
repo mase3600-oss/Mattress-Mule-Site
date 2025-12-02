@@ -11,42 +11,33 @@
     .btn{background:#ff5722;color:white;font-size:28px;font-weight:bold;padding:22px;border:none;border-radius:18px;width:90%;max-width:380px;margin:30px auto;display:block}
     .form{max-width:380px;width:100%;background:white;color:#222;padding:30px 20px;border-radius:18px;margin:0 auto;box-sizing:border-box}
     input,select{width:100%;padding:16px;margin:12px 0;border-radius:12px;border:1px solid #ccc;font-size:18px;box-sizing:border-box}
-    #date{background:white url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiM2NjYiIHN0cm9rZS13aWR0aD0iMiI+PHJlY3QgeD0iMyIgeT0iNCIgd2lkdGg9IjE4IiBoZWlnaHQ9IjE4IiByeD0iMiIvPjxsaW5lIHgxPSI5IiB5MT0iMiIgeDI9IjkiIHkyPSI2Ii8+PGxpbmUgeDE9IjE1IiB5MT0iMiIgeDI9IjE1IiB5Mj0iNiIvPjxsaW5lIHgxPSIzIiB5MT0iMTAiIHgyPSIyMSIgeTI9IjEwIi8+PC9zdmc+') no-repeat 95% center;background-size:20px}
     #price{font-size:36px;font-weight:bold;color:#2e7d32;margin:25px 0}
     footer{background:#111;padding:20px;font-size:16px;text-align:center}
-    img{max-width:100%;border-radius:18px;margin:25px 0}
 </style>
 </head>
 <body>
 <div class="all">
     <h1>Old Mattress Gone Today</h1>
-    <img src="https://freeimage.host/i/fxvb3wG.jpg" alt="Mattress Mule donkey truck">
-    <p>Fast, responsible removal in Rhode Island — recycled at Central Landfill</p>
+    <p style="margin:20px 0 30px">Fast, responsible removal in Rhode Island — recycled at Central Landfill</p>
     <button class="btn" onclick="document.getElementById('form').scrollIntoView({behavior:'smooth'})">
         PICK UP MY MATTRESS TODAY
     </button>
 
     <div class="form" id="form">
-        <form id="bookingForm" action="https://formsubmit.co/mattressmule@gmail.com" method="POST">
-            <h2>Get Your Price & Book</h2>
-            <input type="text" name="Name" placeholder="Your Name" required>
-            <input type="tel" name="Phone" placeholder="Your Phone Number" required>
-            <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
-            <input type="number" name="Quantity" value="1" min="1" placeholder="How many mattresses?">
-            <select name="Service" id="type" onchange="updatePrice()">
-                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119)</option>
-                <option value="https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01">Inside Home Removal – 2 Mules ($179)</option>
-                <option value="https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02">Inside + Stairs/King – 2 Mules ($219)</option>
-            </select>
-            <input type="date" name="Date" id="date" required>
-            <div id="price">$119 Total</div>
+        <h2>Get Your Price & Book</h2>
+        <input type="text" placeholder="Your Name" required>
+        <input type="tel" placeholder="Your Phone Number" required>
+        <input type="text" placeholder="Full Pickup Address (Street + City + ZIP)" required>
+        <input type="number" value="1" min="1" placeholder="How many mattresses?">
+        <select id="type" onchange="updatePrice()">
+            <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119)</option>
+            <option value="https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01">Inside Home Removal – 2 Mules ($179)</option>
+            <option value="https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02">Inside + Stairs/King – 2 Mules ($219)</option>
+        </select>
+        <input type="date" id="date" required>
+        <div id="price">$119 Total</div>
 
-            <!-- Anti-spam + redirect after submit -->
-            <input type="text" name="_captcha" style="display:none">
-            <input type="hidden" name="_next" value="https://mattressmule.com/thanks.html">
-
-            <button type="button" class="btn" onclick="submitFormAndPay()">PAY & BOOK NOW</button>
-        </form>
+        <button class="btn" onclick="payNow()">PAY & BOOK NOW</button>
     </div>
 
     <footer>
@@ -66,9 +57,8 @@
         document.getElementById('price').textContent = '$' + (prices[sel] * qty) + ' Total';
     }
 
-    function submitFormAndPay() {
-        document.getElementById('bookingForm').submit();           // Sends email via Formsubmit
-        const link = document.getElementById('type').value;       // Opens correct Stripe link
+    function payNow() {
+        const link = document.getElementById('type').value;
         window.open(link, '_blank');
     }
 
