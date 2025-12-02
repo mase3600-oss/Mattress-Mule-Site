@@ -85,10 +85,10 @@
     }
 
     function submitAndPay() {
-        document.getElementById('bookingForm').submit(); // Email + SMS
+        document.getElementById('bookingForm').submit(); // Sends email + SMS
 
         const sel = document.getElementById('type').selectedIndex;
-        if (sel < 9) {
+        if (sel < 9) { // Regular orders
             const priceIds = [
                 'price_1SZheB2LYhMSjDZ5gnI4wUJS',
                 'price_1SZwZG2LYhMSjDZ5YoLQGtgS',
@@ -107,6 +107,7 @@
                 cancelUrl: window.location.origin + '?cancel=true'
             });
         }
+        // Custom order does nothing extra — just sends email
     }
 
     updatePrice();
