@@ -34,14 +34,11 @@
             <input type="text" name="Name" placeholder="Your Name" required>
             <input type="tel" name="Phone" placeholder="Your Phone Number" required>
             <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
-
-            <!-- How many mattresses? shows first -->
-            <input type="number" id="quantity" name="Quantity" value="" min="1" placeholder="How many mattresses?" required onchange="updatePrice()">
-
+            <input type="number" id="quantity" name="Quantity" value="1" min="1" placeholder="How many mattresses?" onchange="updatePrice()">
             <select name="Service" id="type" onchange="updatePrice()">
-                <option value="119,60">Curbside – 1 Mule ($119 +$60 each extra)</option>
-                <option value="179,89">Inside Home Removal – 2 Mules ($179 +$89 each extra)</option>
-                <option value="219,99">Inside + Stairs/King – 2 Mules ($219 +$99 each extra)</option>
+                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119)</option>
+                <option value="https://buy.stripe.com/aFaaEQ0b9eWMaznckr7ok03">Inside Home Removal – 2 Mules ($179)</option>
+                <option value="https://buy.stripe.com/4gMdR2aPNbKA6j74RZ7ok04">Inside + Stairs/King – 2 Mules ($219)</option>
             </select>
             <input type="date" name="Date" id="date" required>
 
@@ -63,21 +60,14 @@
 
     function updatePrice() {
         const qty = parseInt(document.getElementById('quantity').value) || 1;
-        const prices = document.getElementById('type').value.split(',');
-        const base = parseInt(prices[0]);
-        const extra = parseInt(prices[1]);
-        const total = qty === 1 ? base : base + (extra * (qty - 1));
-        document.getElementById('price').textContent = '$' + total + ' Total';
+        const prices = {0:119, 1:179, 2:219};
+        const sel = document.getElementById('type').selectedIndex;
+        document.getElementById('price').textContent = '$' + (prices[sel] * qty) + ' Total';
     }
 
     function submitAndPay() {
         document.getElementById('bookingForm').submit();
-        const links = [
-            "https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00",
-            "https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01",
-            "https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02"
-        ];
-        const link = links[document.getElementById('type').selectedIndex];
+        const link = document.getElementById('type').value;
         window.open(link, '_blank');
     }
 
