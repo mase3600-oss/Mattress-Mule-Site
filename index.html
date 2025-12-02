@@ -34,7 +34,10 @@
             <input type="text" name="Name" placeholder="Your Name" required>
             <input type="tel" name="Phone" placeholder="Your Phone Number" required>
             <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
-            <input type="number" id="qty" name="Quantity" value="1" min="1" placeholder="How many mattresses?" onchange="updatePrice()">
+
+            <!-- How many mattresses? shows first -->
+            <input type="number" id="quantity" name="Quantity" value="" min="1" placeholder="How many mattresses?" required onchange="updatePrice()">
+
             <select name="Service" id="type" onchange="updatePrice()">
                 <option value="119,60">Curbside – 1 Mule ($119 +$60 each extra)</option>
                 <option value="179,89">Inside Home Removal – 2 Mules ($179 +$89 each extra)</option>
@@ -59,7 +62,7 @@
     document.getElementById('date').min = today;
 
     function updatePrice() {
-        const qty = parseInt(document.getElementById('qty').value) || 1;
+        const qty = parseInt(document.getElementById('quantity').value) || 1;
         const prices = document.getElementById('type').value.split(',');
         const base = parseInt(prices[0]);
         const extra = parseInt(prices[1]);
