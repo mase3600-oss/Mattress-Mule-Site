@@ -36,18 +36,22 @@
             <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
 
             <select name="Service" id="type" onchange="updatePrice()">
-                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 mattress – $119</option>
-                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 2 mattresses – $198</option>
-                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 3 mattresses – $277</option>
-
-                <option value="https://buy.stripe.com/aFaaEQ0b9eWMaznckr7ok03">Inside – 1 mattress – $179</option>
-                <option value="https://buy.stripe.com/aFaaEQ0b9eWMaznckr7ok03">Inside – 2 mattresses – $258</option>
-                <option value="https://buy.stripe.com/aFaaEQ0b9eWMaznckr7ok03">Inside – 3 mattresses – $337</option>
-
-                <option value="https://buy.stripe.com/4gMdR2aPNbKA6j74RZ7ok04">Inside + Stairs/King – 1 mattress – $219</option>
-                <option value="https://buy.stripe.com/4gMdR2aPNbKA6j74RZ7ok04">Inside + Stairs/King – 2 mattresses – $298</option>
-                <option value="https://buy.stripe.com/4gMdR2aPNbKA6j74RZ7ok04">Inside + Stairs/King – 3 mattresses – $377</option>
-
+                <!-- Curbside -->
+                <option value="https://buy.stripe.com/fZu6oAcXVaGw8rf1FN7ok05">Curbside – 1 mattress – $119</option>
+                <option value="https://buy.stripe.com/6oU3co0b96qgePDgAH7ok06">Curbside – 2 mattresses – $198</option>
+                <option value="https://buy.stripe.com/7sY3coaPN3e47nbfwD7ok07">Curbside – 3 mattresses – $277</option>
+                <option value="https://buy.stripe.com/9B614g3nl2a0fTH7077ok08">Curbside – 4 mattresses – $356</option>
+                <!-- Inside -->
+                <option value="https://buy.stripe.com/aFa00cbTReWM0YNbgn7ok09">Inside – 1 mattress – $179</option>
+                <option value="https://buy.stripe.com/dRm6oAcXV9Cs6j7esz7ok0">Inside – 2 mattresses – $258</option>
+                <option value="https://buy.stripe.com/7sYfZa0b9cOEdLz5W37ok0b">Inside – 3 mattresses – $337</option>
+                <option value="https://buy.stripe.com/9B600caPN6qg8rf84b7ok0c">Inside – 4 mattresses – $416</option>
+                <!-- Stairs/King -->
+                <option value="https://buy.stripe.com/4gM4gsf63bKAbDr98f7ok0d">Inside + Stairs/King – 1 mattress – $219</option>
+                <option value="https://buy.stripe.com/fZucMYaPN4i8dLzfwD7ok0e">Inside + Stairs/King – 2 mattresses – $298</option>
+                <option value="https://buy.stripe.com/7sY3coaPN3e47nbfwD7ok07">Inside + Stairs/King – 3 mattresses – $377</option>
+                <option value="https://buy.stripe.com/9B614g3nl2a0fTH7077ok08">Inside + Stairs/King – 4 mattresses – $456</option>
+                <!-- Custom -->
                 <option value="mailto:mattressmule@gmail.com?subject=Custom Quote Request">Custom Order – Email for Quote: mattressmule@gmail.com</option>
             </select>
 
@@ -70,9 +74,9 @@
     document.getElementById('date').min = today;
 
     const priceText = [
-        "$119 Total", "$198 Total", "$277 Total",
-        "$179 Total", "$258 Total", "$337 Total",
-        "$219 Total", "$298 Total", "$377 Total",
+        "$119 Total", "$198 Total", "$277 Total", "$356 Total",
+        "$179 Total", "$258 Total", "$337 Total", "$416 Total",
+        "$219 Total", "$298 Total", "$377 Total", "$456 Total",
         "Contact us for pricing"
     ];
 
@@ -85,11 +89,11 @@
         document.getElementById('bookingForm').submit(); // Email + SMS
 
         const sel = document.getElementById('type').selectedIndex;
-        if (sel < 9) { // Regular orders
+        if (sel < 12) { // Regular orders
             const link = document.getElementById('type').value;
             window.location.href = link; // Full redirect to Stripe
         }
-        // Custom order does nothing extra — just sends email
+        // Custom order opens email (already in value)
     }
 
     updatePrice();
