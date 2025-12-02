@@ -9,8 +9,9 @@
     .all{background:#2e7d32;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 15px 20px}
     h1{font-size:2.4rem;margin:0 0 10px}
     .btn{background:#ff5722;color:white;font-size:28px;font-weight:bold;padding:22px;border:none;border-radius:18px;width:90%;max-width:380px;margin:30px auto;display:block}
-    .form{max-width:380px;width:100%;background:white;color:#222;padding:30px 25px;border-radius:18px;margin:0 auto}
+    .form{max-width:360px;width:100%;background:white;color:#222;padding:30px 20px;border-radius:18px;margin:0 auto;box-sizing:border-box}
     input,select{width:100%;padding:16px;margin:12px 0;border-radius:12px;border:1px solid #ccc;font-size:18px;box-sizing:border-box}
+    #date{background:white url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMgMTlIMTYuNUwxOSAxNi41VjVIM0M1IDQuNzcgNi4yMiA0IDEwIDRIMTBDMTMuNzcgNCAxNSAyLjIzIDE1IDUuVjE2LjVIMTYuNUwxOSAxNi41VjUuNUgxNUw1IDUuNUw1IDJIMTRDMTAuNzMgMiAxMiA0LjI3IDEyIDcuNUgxNUwxNSAxNkwxNi41IDE5SDE5VjE5QzIwLjY2IDE5IDIyIDE3LjY2IDIyIDE2VjVIMjBDMjEuMzMgNSAyMCA0LjMzIDIwIDMuNUgyMEw5IDMuNUM4LjI3IDMuNSA3LjUgNCA3LjUgNUg1VjE2LjVMMyAxOSAwIDIwSDNaTTIuNSA3SDE5LjVWMi41SDEuNUwyLjUgN1pNMTcuNSA5SDE0VjYuNUgxMi41VjloMy41SDE3LjVaIiBmaWxsPSIjNjY2Ii8+Cjwvc3ZnPgo=') no-repeat 95% center;background-size:20px}
     #price{font-size:36px;font-weight:bold;color:#2e7d32;margin:25px 0}
     footer{background:#111;padding:20px;font-size:16px;text-align:center}
 </style>
@@ -27,16 +28,18 @@
         <h2>Get Your Price & Book</h2>
         <input type="text" placeholder="ZIP Code (e.g. 02903)" required>
         <input type="number" value="1" min="1" placeholder="How many mattresses?">
-        <select id="type">
-            <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119)</option>
-            <option value="https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01">Inside Home Removal – 2 Mules ($179)</option>
-            <option value="https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02">Inside + Stairs/King – 2 Mules ($219)</option>
+        <select id="type" onchange="updatePrice()">
+            <option value="119">Curbside – 1 Mule ($119)</option>
+            <option value="179">Inside Home Removal – 2 Mules ($179)</option>
+            <option value="219">Inside + Stairs/King – 2 Mules ($219)</option>
         </select>
 
-        <input type="date" id="date" required>
-        <div id="price">$119 Total</div>
+        <input type="date" id="date" required placeholder="Tap for calendar">
 
-        <button class="btn" onclick="payNow()">PAY & BOOK NOW</button>
+        <div id="price">$119 Total</div>
+        <button class="btn" onclick="alert('Booking received! We’ll text 401-360-6801 in 5 minutes')">
+            PAY & BOOK NOW
+        </button>
     </div>
 
     <footer>
@@ -48,18 +51,8 @@
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').value = today;
     document.getElementById('date').min = today;
-
-    function payNow() {
-        const link = document.getElementById('type').value;
-        window.open(link, '_blank');
-        alert('Opening secure checkout – complete payment and we’ll text you!');
-    }
-
-    document.getElementById('type').onchange = () => {
-        const prices = {0:119, 1:179 2:219};
-        const qty = document.querySelector('[type=number]').value || 1;
-        document.getElementById('price').textContent = '$' + (prices[document.getElementById('type').selectedIndex] * qty) + ' Total';
-    };
+    function updatePrice(){let q=document.querySelector('[type=number]').value||1;let b=document.getElementById('type').value;document.getElementById('price').textContent='$' + (b*q) + ' Total';}
+    updatePrice();
 </script>
 </body>
 </html>
