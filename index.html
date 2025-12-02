@@ -27,16 +27,18 @@
         <form id="bookingForm" action="https://api.web3forms.com/submit" method="POST">
             <input type="hidden" name="access_key" value="45fdd153-a73c-4748-a881-e4a2d9d838e6">
             <input type="hidden" name="subject" value="New Mattress Mule Booking">
+            <input type="hidden" name="from_name" value="Mattress Mule Booking">
+            <input type="hidden" name="replyto" value="4013606801@vtext.com">
 
             <h2>Get Your Price & Book</h2>
             <input type="text" name="Name" placeholder="Your Name" required>
             <input type="tel" name="Phone" placeholder="Your Phone Number" required>
             <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
-            <input type="number" name="Quantity" value="1" min="1" placeholder="How many mattresses?">
+            <input type="number" name="Quantity" id="qty" value="1" min="1" placeholder="How many mattresses?" onchange="updatePrice()">
             <select name="Service" id="type" onchange="updatePrice()">
-                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119)</option>
-                <option value="https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01">Inside Home Removal – 2 Mules ($179)</option>
-                <option value="https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02">Inside + Stairs/King – 2 Mules ($219)</option>
+                <option value="119,60">Curbside – 1 Mule ($119 +$60 each extra)</option>
+                <option value="179,89">Inside Home Removal – 2 Mules ($179 +$89 each extra)</option>
+                <option value="219,99">Inside + Stairs/King – 2 Mules ($219 +$99 each extra)</option>
             </select>
             <input type="date" name="Date" id="date" required>
 
@@ -57,20 +59,25 @@
     document.getElementById('date').min = today;
 
     function updatePrice() {
-        const qty = document.querySelector('[type=number]').value || 1;
-        const prices = {0:119, 1:179, 2:219};
-        const sel = document.getElementById('type').selectedIndex;
-        document.getElementById('price').textContent = '$' + (prices[sel] * qty) + ' Total';
+        const qty = parseInt(document.getElementById('qty').value) || 1;
+        const prices = document.getElementById('type').value.split(',');
+        const base = parseInt(prices[0]);
+        const extra = parseInt(prices[1]);
+        const total = qty === 1 ? base : base + (extra * (qty - 1));
+        document.getElementById('price').textContent = '$' + total + ' Total';
     }
 
     function submitAndPay() {
-        document.getElementById('bookingForm').submit();  // Sends email instantly
+        document.getElementById('bookingForm').submit();
         const links = [
             "https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00",
             "https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01",
             "https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02"
         ];
-        window.open(links[document.getElementById('type').selectedIndex], '_blank');
+        const qty = parseInt(document.getElementById('qty').value) || 1;
+        const selectedLink = links[document.getElementById('type').selectedIndex];
+        // For multiple mattresses, we just use the base link (Stripe doesn't support dynamic quantity on simple links)
+        window.open(selectedLink, '_blank');
     }
 
     updatePrice();
