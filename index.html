@@ -47,8 +47,7 @@
             <input type="date" name="Date" id="date" required>
 
             <div id="price">$119 Total</div>
-
-            <button type="button" class="btn" onclick="submitAndPay()">PAY & BOOK NOW</button>
+<button type="submit" class="btn">PAY & BOOK NOW</button>
         </form>
     </div>
 
@@ -74,15 +73,11 @@
     }
 
     function submitAndPay() {
-        document.getElementById('bookingForm').submit(); // Email + SMS
-
-        const qty = parseInt(document.getElementById('quantity').value) || 1;
-        const sel = document.getElementById('type').selectedIndex;
-        const priceIds = [
-            'price_1SZheB2LYhMSjDZ5gnI4wUJS', // Curbside $119
-            'price_1SZhfO2LYhMSjDZ56jEw0T0K', // Inside $179
-            'price_1SZhg52LYhMSjDZ5cIKc0azX'  // Stairs $219
-        ];
+        document.getElementById('bookingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const link = document.getElementById('type').value;
+    window.location.href = link;
+});
 
         stripe.redirectToCheckout({
             lineItems: [{ price: priceIds[sel], quantity: qty }],
