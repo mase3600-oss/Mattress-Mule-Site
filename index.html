@@ -24,7 +24,10 @@
     </button>
 
     <div class="form" id="form">
-        <form id="bookingForm" action="https://formsubmit.co/mattressmule@gmail.com" method="POST">
+        <form id="bookingForm" action="https://api.web3forms.com/submit" method="POST">
+            <input type="hidden" name="access_key" value="45fdd153-a73c-4748-a881-e4a2d9d838e6">
+            <input type="hidden" name="subject" value="New Mattress Mule Booking">
+
             <h2>Get Your Price & Book</h2>
             <input type="text" name="Name" placeholder="Your Name" required>
             <input type="tel" name="Phone" placeholder="Your Phone Number" required>
@@ -38,11 +41,6 @@
             <input type="date" name="Date" id="date" required>
 
             <div id="price">$119 Total</div>
-
-            <!-- These three lines make email + payment work perfectly -->
-            <input type="text" name="_captcha" style="display:none">
-            <input type="hidden" name="_email.to" value="mattressmule@gmail.com">
-            <input type="hidden" name="_next" value="https://mattressmule.com/thanks.html">
 
             <button type="button" class="btn" onclick="submitAndPay()">PAY & BOOK NOW</button>
         </form>
@@ -66,7 +64,7 @@
     }
 
     function submitAndPay() {
-        document.getElementById('bookingForm').submit(); // Sends email
+        document.getElementById('bookingForm').submit();  // Sends email instantly
         const links = [
             "https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00",
             "https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01",
