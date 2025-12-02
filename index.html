@@ -24,20 +24,25 @@
     </button>
 
     <div class="form" id="form">
-        <h2>Get Your Price & Book</h2>
-        <input type="text" placeholder="Your Name" required>
-        <input type="tel" placeholder="Your Phone Number" required>
-        <input type="text" placeholder="Full Pickup Address (Street + City + ZIP)" required>
-        <input type="number" value="1" min="1" placeholder="How many mattresses?">
-        <select id="type" onchange="updatePrice()">
-            <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119)</option>
-            <option value="https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01">Inside Home Removal – 2 Mules ($179)</option>
-            <option value="https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02">Inside + Stairs/King – 2 Mules ($219)</option>
-        </select>
-        <input type="date" id="date" required>
-        <div id="price">$119 Total</div>
+        <form id="bookingForm" action="https://formsubmit.co/mattressmule@gmail.com" method="POST">
+            <h2>Get Your Price & Book</h2>
+            <input type="text" name="Name" placeholder="Your Name" required>
+            <input type="tel" name="Phone" placeholder="Your Phone Number" required>
+            <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
+            <input type="number" name="Quantity" value="1" min="1" placeholder="How many mattresses?">
+            <select name="Service" id="type" onchange="updatePrice()">
+                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119)</option>
+                <option value="https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01">Inside Home Removal – 2 Mules ($179)</option>
+                <option value="https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02">Inside + Stairs/King – 2 Mules ($219)</option>
+            </select>
+            <input type="date" name="Date" id="date" required>
+            <div id="price">$119 Total</div>
 
-        <button class="btn" onclick="payNow()">PAY & BOOK NOW</button>
+            <input type="text" name="_captcha" style="display:none">
+            <input type="hidden" name="_next" value="https://mattressmule.com/thanks.html">
+
+            <button type="button" class="btn" onclick="submitAndPay()">PAY & BOOK NOW</button>
+        </form>
     </div>
 
     <footer>
@@ -57,9 +62,14 @@
         document.getElementById('price').textContent = '$' + (prices[sel] * qty) + ' Total';
     }
 
-    function payNow() {
-        const link = document.getElementById('type').value;
-        window.open(link, '_blank');
+    function submitAndPay() {
+        document.getElementById('bookingForm').submit();
+        const links = [
+            "https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00",
+            "https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01",
+            "https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02"
+        ];
+        window.open(links[document.getElementById('type').selectedIndex], '_blank');
     }
 
     updatePrice();
