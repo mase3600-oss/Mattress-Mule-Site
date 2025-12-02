@@ -1,10 +1,9 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mattress Mule – Rhode Island</title>
-<script src="https://js.stripe.com/v3/"></script>
 <style>
     body,html{margin:0;padding:0;height:100%;font-family:system-ui,sans-serif;background:#2e7d32;color:white}
     .all{background:#2e7d32;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 15px 20px}
@@ -35,19 +34,17 @@
             <input type="text" name="Name" placeholder="Your Name" required>
             <input type="tel" name="Phone" placeholder="Your Phone Number" required>
             <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
-
-            <!-- How many mattresses first (blank) -->
-            <input type="number" id="quantity" name="Quantity" value="" min="1" placeholder="How many mattresses?" required onchange="updatePrice()">
-
+            <input type="number" id="quantity" name="Quantity" value="1" min="1" placeholder="How many mattresses?" onchange="updatePrice()">
             <select name="Service" id="type" onchange="updatePrice()">
-                <option value="119,79">Curbside – 1 Mule ($119 +$79 each extra)</option>
-                <option value="179,79">Inside Home Removal – 2 Mules ($179 +$79 each extra)</option>
-                <option value="219,79">Inside + Stairs/King – 2 Mules ($219 +$79 each extra)</option>
+                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119 +$79 each extra)</option>
+                <option value="https://buy.stripe.com/aFaaEQ0b9eWMaznckr7ok03">Inside Home Removal – 2 Mules ($179 +$79 each extra)</option>
+                <option value="https://buy.stripe.com/4gMdR2aPNbKA6j74RZ7ok04">Inside + Stairs/King – 2 Mules ($219 +$79 each extra)</option>
             </select>
             <input type="date" name="Date" id="date" required>
 
             <div id="price">$119 Total</div>
-<button type="submit" class="btn">PAY & BOOK NOW</button>
+
+            <button type="submit" class="btn">PAY & BOOK NOW</button>
         </form>
     </div>
 
@@ -57,37 +54,31 @@
 </div>
 
 <script>
-    const stripe = Stripe('pk_live_51SZhEG2LYhMSjDZ5p1kPcuLriDkT5AndqTfMn93gvIi6aAy78QSd6h62LMrlho1wg3HHr6Sb1V6rgFdjkOsFbmf800MNbxD18H');
-
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').value = today;
     document.getElementById('date').min = today;
 
     function updatePrice() {
         const qty = parseInt(document.getElementById('quantity').value) || 1;
-        const prices = document.getElementById('type').value.split(',');
-        const base = parseInt(prices[0]);
-        const extra = parseInt(prices[1]);
+        const prices = {0:119, 1:179, 2:219};
+        const extra = 79;
+        const sel = document.getElementById('type').selectedIndex;
+        const base = prices[sel];
         const total = qty === 1 ? base : base + (extra * (qty - 1));
         document.getElementById('price').textContent = '$' + total + ' Total';
     }
 
-    function submitAndPay() {
-        document.getElementById('bookingForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const link = document.getElementById('type').value;
-    window.location.href = link;
-});
-
-        stripe.redirectToCheckout({
-            lineItems: [{ price: priceIds[sel], quantity: qty }],
-            mode: 'payment',
-            successUrl: window.location.origin + '?success=true',
-            cancelUrl: window.location.origin + '?cancel=true'
-        });
-    }
+    // This makes it go straight to Stripe after sending the email
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        this.submit(); // Sends email + SMS
+        const link = document.getElementById('type').value;
+        window.location.href = link; // Full redirect to Stripe
+    });
 
     updatePrice();
 </script>
 </body>
 </html>
+
+    
