@@ -1,9 +1,10 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mattress Mule – Rhode Island</title>
+<script src="https://js.stripe.com/v3/"></script>
 <style>
     body,html{margin:0;padding:0;height:100%;font-family:system-ui,sans-serif;background:#2e7d32;color:white}
     .all{background:#2e7d32;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 15px 20px}
@@ -34,17 +35,28 @@
             <input type="text" name="Name" placeholder="Your Name" required>
             <input type="tel" name="Phone" placeholder="Your Phone Number" required>
             <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
-            <input type="number" id="quantity" name="Quantity" value="1" min="1" placeholder="How many mattresses?" onchange="updatePrice()">
+
             <select name="Service" id="type" onchange="updatePrice()">
-                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119 +$79 each extra)</option>
-                <option value="https://buy.stripe.com/aFaaEQ0b9eWMaznckr7ok03">Inside Home Removal – 2 Mules ($179 +$79 each extra)</option>
-                <option value="https://buy.stripe.com/4gMdR2aPNbKA6j74RZ7ok04">Inside + Stairs/King – 2 Mules ($219 +$79 each extra)</option>
+                <option value="price_1SZheB2LYhMSjDZ5gnI4wUJS">Curbside – 1 mattress – $119</option>
+                <option value="price_1SZwZG2LYhMSjDZ5YoLQGtgS">Curbside – 2 mattresses – $198</option>
+                <option value="price_1SZwau2LYhMSjDZ5ipolAuz8">Curbside – 3 mattresses – $277</option>
+
+                <option value="price_1SZhfO2LYhMSjDZ56jEw0T0K">Inside – 1 mattress – $179</option>
+                <option value="price_1SZwcD2LYhMSjDZ5E1nYKTLU">Inside – 2 mattresses – $258</option>
+                <option value="price_1SZwdh2LYhMSjDZ5GXzT5vLQ">Inside – 3 mattresses – $337</option>
+
+                <option value="price_1SZhg52LYhMSjDZ5cIKc0azX">Inside + Stairs/King – 1 mattress – $219</option>
+                <option value="price_1SZwfl2LYhMSjDZ5uhv1p0aX">Inside + Stairs/King – 2 mattresses – $298</option>
+                <option value="price_1SZwh62LYhMSjDZ5bONpFjEy">Inside + Stairs/King – 3 mattresses – $377</option>
+
+                <option value="mailto:mattressmule@gmail.com?subject=Custom Quote">Custom Order – Email for Quote</option>
             </select>
+
             <input type="date" name="Date" id="date" required>
 
             <div id="price">$119 Total</div>
 
-            <button type="submit" class="btn">PAY & BOOK NOW</button>
+            <button type="button" class="btn" onclick="submitAndPay()">PAY & BOOK NOW</button>
         </form>
     </div>
 
@@ -54,31 +66,50 @@
 </div>
 
 <script>
+    const stripe = Stripe('pk_live_51SZhEG2LYhMSjDZ5p1kPcuLriDkT5AndqTfMn93gvIi6aAy78QSd6h62LMrlho1wg3HHr6Sb1V6rgFdjkOsFbmf800MNbxD18H');
+
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').value = today;
     document.getElementById('date').min = today;
 
+    const priceText = [
+        "$119 Total", "$198 Total", "$277 Total",
+        "$179 Total", "$258 Total", "$337 Total",
+        "$219 Total", "$298 Total", "$377 Total",
+        "Contact us for pricing"
+    ];
+
     function updatePrice() {
-        const qty = parseInt(document.getElementById('quantity').value) || 1;
-        const prices = {0:119, 1:179, 2:219};
-        const extra = 79;
         const sel = document.getElementById('type').selectedIndex;
-        const base = prices[sel];
-        const total = qty === 1 ? base : base + (extra * (qty - 1));
-        document.getElementById('price').textContent = '$' + total + ' Total';
+        document.getElementById('price').textContent = priceText[sel];
     }
 
-    // This makes it go straight to Stripe after sending the email
-    document.getElementById('bookingForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        this.submit(); // Sends email + SMS
-        const link = document.getElementById('type').value;
-        window.location.href = link; // Full redirect to Stripe
-    });
+    function submitAndPay() {
+        document.getElementById('bookingForm').submit(); // Email + SMS
+
+        const sel = document.getElementById('type').selectedIndex;
+        if (sel < 9) {
+            const priceIds = [
+                'price_1SZheB2LYhMSjDZ5gnI4wUJS',
+                'price_1SZwZG2LYhMSjDZ5YoLQGtgS',
+                'price_1SZwau2LYhMSjDZ5ipolAuz8',
+                'price_1SZhfO2LYhMSjDZ56jEw0T0K',
+                'price_1SZwcD2LYhMSjDZ5E1nYKTLU',
+                'price_1SZwdh2LYhMSjDZ5GXzT5vLQ',
+                'price_1SZhg52LYhMSjDZ5cIKc0azX',
+                'price_1SZwfl2LYhMSjDZ5uhv1p0aX',
+                'price_1SZwh62LYhMSjDZ5bONpFjEy'
+            ];
+            stripe.redirectToCheckout({
+                lineItems: [{ price: priceIds[sel], quantity: 1 }],
+                mode: 'payment',
+                successUrl: window.location.origin + '?success=true',
+                cancelUrl: window.location.origin + '?cancel=true'
+            });
+        }
+    }
 
     updatePrice();
 </script>
 </body>
 </html>
-
-    
