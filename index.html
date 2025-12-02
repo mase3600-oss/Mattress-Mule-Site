@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Mattress Mule – Rhode Island</title>
+<script src="https://js.stripe.com/v3/"></script>
 <style>
     body,html{margin:0;padding:0;height:100%;font-family:system-ui,sans-serif;background:#2e7d32;color:white}
     .all{background:#2e7d32;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:40px 15px 20px}
@@ -34,7 +35,10 @@
             <input type="text" name="Name" placeholder="Your Name" required>
             <input type="tel" name="Phone" placeholder="Your Phone Number" required>
             <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
-            <input type="number" id="quantity" name="Quantity" value="1" min="1" placeholder="How many mattresses?" onchange="updatePrice()">
+
+            <!-- How many mattresses first (blank) -->
+            <input type="number" id="quantity" name="Quantity" value="" min="1" placeholder="How many mattresses?" required onchange="updatePrice()">
+
             <select name="Service" id="type" onchange="updatePrice()">
                 <option value="119,79">Curbside – 1 Mule ($119 +$79 each extra)</option>
                 <option value="179,79">Inside Home Removal – 2 Mules ($179 +$79 each extra)</option>
@@ -54,6 +58,8 @@
 </div>
 
 <script>
+    const stripe = Stripe('pk_live_51SZhEG2LYhMSjDZ5p1kPcuLriDkT5AndqTfMn93gvIi6aAy78QSd6h62LMrlho1wg3HHr6Sb1V6rgFdjkOsFbmf800MNbxD18H');
+
     const today = new Date().toISOString().split('T')[0];
     document.getElementById('date').value = today;
     document.getElementById('date').min = today;
@@ -68,13 +74,22 @@
     }
 
     function submitAndPay() {
-        document.getElementById('bookingForm').submit();
-        const links = [
-            "https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00",
-            "https://buy.stripe.com/aFaaEQ0b9eWMaznckr7ok03",
-            "https://buy.stripe.com/4gMdR2aPNbKA6j74RZ7ok04"
+        document.getElementById('bookingForm').submit(); // Email + SMS
+
+        const qty = parseInt(document.getElementById('quantity').value) || 1;
+        const sel = document.getElementById('type').selectedIndex;
+        const priceIds = [
+            'price_1SZheB2LYhMSjDZ5gnI4wUJS', // Curbside $119
+            'price_1SZhfO2LYhMSjDZ56jEw0T0K', // Inside $179
+            'price_1SZhg52LYhMSjDZ5cIKc0azX'  // Stairs $219
         ];
-        window.open(links[document.getElementById('type').selectedIndex], '_blank');
+
+        stripe.redirectToCheckout({
+            lineItems: [{ price: priceIds[sel], quantity: qty }],
+            mode: 'payment',
+            successUrl: window.location.origin + '?success=true',
+            cancelUrl: window.location.origin + '?cancel=true'
+        });
     }
 
     updatePrice();
