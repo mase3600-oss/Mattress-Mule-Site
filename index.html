@@ -34,7 +34,7 @@
             <input type="text" name="Name" placeholder="Your Name" required>
             <input type="tel" name="Phone" placeholder="Your Phone Number" required>
             <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
-            <input type="number" name="Quantity" id="qty" value="1" min="1" placeholder="How many mattresses?" onchange="updatePrice()">
+            <input type="number" id="qty" name="Quantity" value="1" min="1" placeholder="How many mattresses?" onchange="updatePrice()">
             <select name="Service" id="type" onchange="updatePrice()">
                 <option value="119,60">Curbside – 1 Mule ($119 +$60 each extra)</option>
                 <option value="179,89">Inside Home Removal – 2 Mules ($179 +$89 each extra)</option>
@@ -74,10 +74,8 @@
             "https://buy.stripe.com/8x2bIUga7aGw7nb7077ok01",
             "https://buy.stripe.com/aFa28k8HF2a0bDrfwD7ok02"
         ];
-        const qty = parseInt(document.getElementById('qty').value) || 1;
-        const selectedLink = links[document.getElementById('type').selectedIndex];
-        // For multiple mattresses, we just use the base link (Stripe doesn't support dynamic quantity on simple links)
-        window.open(selectedLink, '_blank');
+        const link = links[document.getElementById('type').selectedIndex];
+        window.open(link, '_blank');
     }
 
     updatePrice();
