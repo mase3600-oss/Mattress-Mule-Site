@@ -36,9 +36,9 @@
             <input type="text" name="Address" placeholder="Full Pickup Address (Street + City + ZIP)" required>
             <input type="number" id="quantity" name="Quantity" value="1" min="1" placeholder="How many mattresses?" onchange="updatePrice()">
             <select name="Service" id="type" onchange="updatePrice()">
-                <option value="https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00">Curbside – 1 Mule ($119)</option>
-                <option value="https://buy.stripe.com/aFaaEQ0b9eWMaznckr7ok03">Inside Home Removal – 2 Mules ($179)</option>
-                <option value="https://buy.stripe.com/4gMdR2aPNbKA6j74RZ7ok04">Inside + Stairs/King – 2 Mules ($219)</option>
+                <option value="119,79">Curbside – 1 Mule ($119 +$79 each extra)</option>
+                <option value="179,79">Inside Home Removal – 2 Mules ($179 +$79 each extra)</option>
+                <option value="219,79">Inside + Stairs/King – 2 Mules ($219 +$79 each extra)</option>
             </select>
             <input type="date" name="Date" id="date" required>
 
@@ -60,15 +60,21 @@
 
     function updatePrice() {
         const qty = parseInt(document.getElementById('quantity').value) || 1;
-        const prices = {0:119, 1:179, 2:219};
-        const sel = document.getElementById('type').selectedIndex;
-        document.getElementById('price').textContent = '$' + (prices[sel] * qty) + ' Total';
+        const prices = document.getElementById('type').value.split(',');
+        const base = parseInt(prices[0]);
+        const extra = parseInt(prices[1]);
+        const total = qty === 1 ? base : base + (extra * (qty - 1));
+        document.getElementById('price').textContent = '$' + total + ' Total';
     }
 
     function submitAndPay() {
         document.getElementById('bookingForm').submit();
-        const link = document.getElementById('type').value;
-        window.open(link, '_blank');
+        const links = [
+            "https://buy.stripe.com/00w8wIaPNg0Q4aZdov7ok00",
+            "https://buy.stripe.com/aFaaEQ0b9eWMaznckr7ok03",
+            "https://buy.stripe.com/4gMdR2aPNbKA6j74RZ7ok04"
+        ];
+        window.open(links[document.getElementById('type').selectedIndex], '_blank');
     }
 
     updatePrice();
